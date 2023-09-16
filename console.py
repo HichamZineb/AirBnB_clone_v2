@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -118,11 +118,26 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args = args.split()
+        class_name = args[0]
+        if class_name not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+        new_instance = HBNBCommand.classes[class_name]()
+        for param in args[1:]:
+            name_value = param.split('=')
+            if len(name_value) != 2:
+                continue
+            name, value = name_value
+            if value.startswith('"') and value.endswith('"'):
+                value = value.strip('"').replace('_', ' ')
+            elif value.isdecimal():
+                value = int(value)
+            elif value.replace('.', '').isdecimal() and value.count('.') == 1:
+                value = float(value)
+            else:
+                continue
+            new_instance.__dict__[name] = value
         print(new_instance.id)
         storage.save()
 
@@ -187,7 +202,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del storage.all()[key]
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -319,6 +334,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
