@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
             if name == '' or value == '':
                 continue
             if value.startswith('"') and value.endswith('"'):
-                value = value.strip('"').replace('_', ' ')
+                value = value.strip('"').replace('_', ' ').replace('\\"', '"')
             elif value.isdecimal():
                 value = int(value)
             elif value.replace('.', '').isdecimal() and value.count('.') == 1:
