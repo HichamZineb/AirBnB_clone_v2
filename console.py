@@ -129,6 +129,8 @@ class HBNBCommand(cmd.Cmd):
             if len(name_value) != 2:
                 continue
             name, value = name_value
+            if name == '' or value == '':
+                continue
             if value.startswith('"') and value.endswith('"'):
                 value = value.strip('"').replace('_', ' ')
             elif value.isdecimal():
