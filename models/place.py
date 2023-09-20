@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
 from models.base_model import BaseModel
+<<<<<<< HEAD
 from models.base_model import Base
 import models
 from os import getenv
@@ -12,6 +13,9 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Table
+=======
+from sqlalchemy import Column, String, Integer, Float, ForeignKey
+>>>>>>> d4ab9ad114dee6e667c42513add2993d9e8e599a
 from sqlalchemy.orm import relationship
 
 place_table = Table(
@@ -27,6 +31,7 @@ place_table = Table(
 class Place(BaseModel, Base):
     """ A place to stay """
     __tablename__ = "places"
+<<<<<<< HEAD
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
     user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
     name = Column(String(128), nullable=False)
@@ -40,6 +45,18 @@ class Place(BaseModel, Base):
     reviews = relationship("Review", backref="place", cascade="delete")
     amenities = relationship("Amenity", secondary="place_amenity",
                              viewonly=False)
+=======
+    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+    name = Column(String(128), nullable=False)
+    description = Column(String(1024))
+    number_rooms = Column(Integer, default=0, nullable=False)
+    number_bathrooms = Column(Integer, default=0, nullable=False)
+    max_guest = Column(Integer, default=0, nullable=False)
+    price_by_night = Column(Integer, default=0, nullable=False)
+    latitude = Column(Float, default=0.0)
+    longitude = Column(Float, default=0.0)
+>>>>>>> d4ab9ad114dee6e667c42513add2993d9e8e599a
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE", None) != "db":
